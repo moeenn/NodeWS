@@ -10,8 +10,8 @@ config({ path: "./src/.env"});
  *  setup the database and store connection
  * 
 */
-import Database from "./classes/Database.js";
-import Store from "./classes/Store.js";
+import Database from "../Entities/Database.js";
+import Store from "../Entities/Store.js";
 const db = new Database({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,

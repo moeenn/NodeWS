@@ -1,20 +1,34 @@
 import express from "express";
 import cors from "cors";
+import bodyParser from "body-parser";
 import { Server } from "socket.io";
 import { v4 as uuidv4 } from 'uuid';
-import { store } from "./config.js";
+import { store } from "./Config/bootstrap.js";
+import API from "./API/api.js";
 
 const main = async () => {
-
-  const message = await store.saveMessage({chatID: 3, senderID: 40, text: "This is sample message"});
-  console.log(message);
-
-  store.close();
-
-  return;
   const app = express();
+
+  /**
+   *  register required middleware
+   * 
+  */
+  app.use(bodyParser.json())
   app.use(cors());
 
+
+  /**
+   *  register http api endpoints
+   * 
+  */
+  app.post("/api/chats", API.Chat.listUserChats(store));
+  app.post("/api/messages", API.Messages.listChatMessages(store));
+
+
+  /**
+   *  register web sockets server
+   * 
+  */
   console.log("Starting server on port", process.env.SERVER_PORT);
   const server = app.listen(process.env.SERVER_PORT);
   const io = new Server(server, {

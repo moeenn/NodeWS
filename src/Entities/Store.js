@@ -25,6 +25,21 @@ class Store {
     return await this._db.query(query, [userID]);
   }
 
+
+  /**
+   *  get users in a chat
+   * 
+  */
+  async getChatUsers(chatID) {
+    const query = `
+    SELECT DISTINCT(user_id) FROM participants
+    WHERE chat_id = ?;
+    `;
+
+    return await this._db.query(query, [chatID]);
+  }
+
+
   /**
    *  get all messages in a chat (room)
    * 
