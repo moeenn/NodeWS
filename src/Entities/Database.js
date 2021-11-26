@@ -17,15 +17,6 @@ class Database {
   disconnect() {
     this._conn.end();
   }
-
-  query(statement, params = []) {
-    return new Promise((resolve, reject) => {
-      this._conn.query(statement, params, (error, results, fields) => {
-        if (error) reject(error);
-        resolve(results);
-      });
-    });
-  }
 }
 
 export default Database;

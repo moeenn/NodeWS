@@ -11,7 +11,10 @@ config({ path: "./src/.env"});
  * 
 */
 import Database from "../Entities/Database.js";
-import Store from "../Entities/Store.js";
+import Chat from "../Models/Chat.js";
+import Participant from "../Models/Participant.js";
+import Message from "../Models/Message.js";
+
 const db = new Database({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
@@ -19,6 +22,14 @@ const db = new Database({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
 });
-const store = new Store(db);
 
-export { store };
+const chat = new Chat(db, 'chats');
+const participant = new Participant(db, 'participants');
+const message = new Message(db, 'messages');
+
+const models = { chat, participant, message };
+
+export {
+  db,
+  models,
+};

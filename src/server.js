@@ -3,7 +3,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import { Server } from "socket.io";
 import { v4 as uuidv4 } from 'uuid';
-import { store } from "./Config/bootstrap.js";
+import { models } from "./Config/bootstrap.js";
 import API from "./API/api.js";
 
 const main = async () => {
@@ -21,8 +21,9 @@ const main = async () => {
    *  register http api endpoints
    * 
   */
-  app.post("/api/chats", API.Chat.listUserChats(store));
-  app.post("/api/messages", API.Messages.listChatMessages(store));
+  app.post("/api/chats", API.Chat.listUserChats(models));
+  app.post("/api/chats/create", API.Chat.createChat(models));
+  app.post("/api/messages", API.Messages.listChatMessages(models));
 
 
   /**

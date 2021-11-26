@@ -1,8 +1,8 @@
 const Messages = {
-  listChatMessages: (store) => {
+  listChatMessages: (models) => {
     return async (req, res) => {
       const { chat_id } = req.body;
-      const messages = await store.getChatMessages(chat_id);
+      const messages = await models.chat.getChatMessages(chat_id);
 
       res.json(messages);
     };
