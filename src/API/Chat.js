@@ -7,13 +7,18 @@ const Chat = {
 
       if (!user_id) {
         res
-          .json({ message: "Missing post fields: user_id" })
-          .status(400);
+          .status(400)
+          .json({ message: "Missing post fields: user_id" });
+
         return;
       }
 
       let chats = await models.chat.getUserChats(user_id);
 
+      /**
+       *  cannot pass async functions to array map callback,
+       *  therefore this traditional c-style for loop
+      */
       for (let i = 0; i < chats.length; i++) {
         chats[i].users = await models.chat.getChatUsers(chats[i].id);
       }
@@ -28,19 +33,22 @@ const Chat = {
 
       if (!users) {
         res
-          .json({ message: "Missing post field: users" })
-          .status(400);
+          .status(400)
+          .json({ message: "Missing post field: users" });
 
         return;
       }
 
-      // if (models.chat.isChatInitiated(users[0], users[1])) {
-      //   res
-      //     .json({ message: "Chat between users already exists" })
-      //     .status(400);
+      const [userA, userB] = users;
+      const initiated = await models.chat.isChatInitiated(userA, userB); 
 
-      //   return;
-      // }
+      if (initiated) {
+        res
+          .status(400)
+          .json({ message: "Chat between users already exists" });
+
+        return;
+      }
 
       const roomID = uuidv4();
       const chat = await models.chat.create(roomID);
@@ -50,8 +58,8 @@ const Chat = {
       }
 
       res
-        .json({ message: "Chat created successfully" })
-        .status(201);
+        .status(201)
+        .json({ message: "Chat created successfully" });
     };
   },
 };

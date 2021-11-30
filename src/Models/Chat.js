@@ -84,6 +84,8 @@ class Chat extends Model {
     };
 
     const matchIDs = (results, a, b) => {
+      if (!results) return false;
+
       for (const [chat_id, users] of Object.entries(results)) {
         if (users.includes(a) && users.includes(b)) {
           return chat_id;

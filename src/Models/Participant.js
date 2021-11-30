@@ -11,7 +11,7 @@ class Participant extends Model {
     VALUES (?, ?);
     `;
 
-    const participant = await this.query(query[chatID, userID]);
+    const participant = await this.query(query, [chatID, userID]);
     return await this.find(participant.insertId);
   }
 }
